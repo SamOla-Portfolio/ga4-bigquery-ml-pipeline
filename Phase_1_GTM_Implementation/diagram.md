@@ -3,7 +3,7 @@ This phase serves as the foundation of the project, focusing on the Data Acquisi
 
 # 1. Logic Flow & Privacy Governance
 The tracking ecosystem follows a Consent-First architecture. By decoupling behavioral listeners from the core site initialization, we ensure 100% compliance with global privacy standards (GDPR/CCPA).
-
+-------
 ```mermaid
 graph TD
     Start(User Interaction) --> Consent{Consent Layer}
@@ -16,7 +16,7 @@ graph TD
     
     Standard --> Cloud(GA4 Analytics Cloud)
     Enrichment --> Cloud
-
+---------
 
 **Data Privacy & Ethical Tracking**
 In this project, data collection is handled with a Privacy-by-Design approach. The core objective is to understand user behavior patterns while strictly protecting individual anonymity.
