@@ -29,25 +29,45 @@ The expected outcome is a practical business solution:
 * **Business Scorecard:** A visual dashboard that translates user behaviour into clear financial numbers, focusing on "Revenue at Risk" and "Saved Sales" rather than basic page views.
   
 ```mermaid
-graph TD
-    subgraph Phase 1: Data Collection
-        User(User Browser) -->|Scroll & Idle Behavior| GTM[GTM: Custom Listeners]
-        GTM -->|Enriched Event Dispatch| GA4[(GA4 Cloud)]
+graph LR
+    %% Phase 1: Ingestion
+    subgraph Phase_1 [1. Behavioral Ingestion]
+        A[User Interaction] -->|GTM / Consent v2| B(Google Tag Manager)
+        B -->|Hesitation & Scroll| C(GA4 Events)
     end
 
-    subgraph Phase 2: Data Engineering
-        GA4 -->|Raw Nested Export| BQ{BigQuery: SQL Layer}
-        BQ -->|Unnest & Harmonize| Flat[(Flat Analytical Table)]
+    %% Phase 2: Warehouse
+    subgraph Phase_2 [2. Data & Simulation]
+        C -->|Daily Batch| D[(BigQuery Warehouse)]
+        E[Python Synthetic Data] -->|500 sessions PoC| D
+        D -->|SQL Flattening| F{Analyzable Data}
     end
 
-    subgraph Phase 3: Analysis & Visualization
-        Flat -->|Data Import| R_Env[R Studio: Statistical Modeling]
-        Flat -->|Live Connection| Looker[Looker Studio: Business Dashboard]
+    %% Phase 3 & 4: Analysis & AI
+    subgraph Phase_3_4 [3 & 4. Analytics & AI Storytelling]
+        F -->|Statistical Inference| G[R Studio: Logistic Regression]
+        F -->|Predictive Scoring| H[BigQuery ML: Risk Models]
         
-        R_Env -.->|Export Insights| Looker
+        G -->|Coefficient Data| I(Combined Analytics Feed)
+        H -->|Abandonment Probability| I
+        
+        I -->|System Prompt| J{{GenAI / Gemini LLM}}
     end
 
-    %% Styling to make it visually attractive
-    style Phase 1 fill:#f9f2f4,stroke:#333,stroke-width:2px
-    style Phase 2 fill:#e2f0cb,stroke:#333,stroke-width:2px
-    style Phase 3 fill:#cdecf9,stroke:#333,stroke-width:2px
+    %% Phase 5: BI & Output
+    subgraph Phase_5 [5. BI & Data Storytelling]
+        J -->|Automated Narrative| K[AI Executive Summary]
+        F -->|Quant Metrics| L[KPI Dashboards]
+        
+        K & L --> M[Looker Studio: AI-Enhanced UI]
+    end
+
+    %% Documentation
+    M --> N[GitHub: Business Case Study]
+
+    %% Styling for Professionalism
+    style J fill:#f96,stroke:#333,stroke-width:2px,color:#000
+    style M fill:#69f,stroke:#333,stroke-width:2px,color:#fff
+    style D fill:#dfd,stroke:#333,color:#000
+    style Phase_1 fill:#f9f9f9,stroke-dasharray: 5 5
+    style Phase_5 fill:#f0f4ff,stroke:#333
