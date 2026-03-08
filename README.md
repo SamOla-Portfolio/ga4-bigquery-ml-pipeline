@@ -29,45 +29,44 @@ The expected outcome is a practical business solution:
 * **Business Scorecard:** A visual dashboard that translates user behaviour into clear financial numbers, focusing on "Revenue at Risk" and "Saved Sales" rather than basic page views.
   
 ```mermaid
-graph LR
-    %% Phase 1: Ingestion
-    subgraph Phase_1 [1. Behavioral Ingestion]
+graph TD
+    %% Phase 1
+    subgraph P1 [1. Behavioral Ingestion]
         A[User Interaction] -->|GTM / Consent v2| B(Google Tag Manager)
         B -->|Hesitation & Scroll| C(GA4 Events)
     end
 
-    %% Phase 2: Warehouse
-    subgraph Phase_2 [2. Data & Simulation]
+    %% Phase 2
+    subgraph P2 [2. Data & Simulation]
         C -->|Daily Batch| D[(BigQuery Warehouse)]
         E[Python Synthetic Data] -->|500 sessions PoC| D
         D -->|SQL Flattening| F{Analyzable Data}
     end
 
-    %% Phase 3 & 4: Analysis & AI
-    subgraph Phase_3_4 [3 & 4. Analytics & AI Storytelling]
-        F -->|Statistical Inference| G[R Studio: Logistic Regression]
-        F -->|Predictive Scoring| H[BigQuery ML: Risk Models]
+    %% Phase 3 & 4
+    subgraph P3_4 [3 & 4. Analytics & AI Storytelling]
+        F --> G[R Studio: Logistic Regression]
+        F --> H[BigQuery ML: Risk Models]
         
-        G -->|Coefficient Data| I(Combined Analytics Feed)
+        G -->|Coefficient Data| I(Combined Feed)
         H -->|Abandonment Probability| I
         
         I -->|System Prompt| J{{GenAI / Gemini LLM}}
     end
 
-    %% Phase 5: BI & Output
-    subgraph Phase_5 [5. BI & Data Storytelling]
+    %% Phase 5
+    subgraph P5 [5. BI & Data Storytelling]
         J -->|Automated Narrative| K[AI Executive Summary]
         F -->|Quant Metrics| L[KPI Dashboards]
         
         K & L --> M[Looker Studio: AI-Enhanced UI]
     end
 
-    %% Documentation
+    %% Final Output
     M --> N[GitHub: Business Case Study]
 
-    %% Styling for Professionalism
+    %% Styles for readability
     style J fill:#f96,stroke:#333,stroke-width:2px,color:#000
     style M fill:#69f,stroke:#333,stroke-width:2px,color:#fff
     style D fill:#dfd,stroke:#333,color:#000
-    style Phase_1 fill:#f9f9f9,stroke-dasharray: 5 5
-    style Phase_5 fill:#f0f4ff,stroke:#333
+    style F fill:#fff4dd,stroke:#d4a017,stroke-width:2px
