@@ -30,26 +30,26 @@ The expected outcome is a practical business solution:
 
 ## 6. Privacy and Consent (Consent Mode v2)
 
-Modern data projects must balance tracking user behavior with respecting privacy laws like GDPR. This project uses **Google Advanced Consent Mode v2** to stay legally compliant without losing the data needed for our AI models.
+Modern data projects must balance tracking user behavior with respecting privacy laws like GDPR and the ePrivacy Directive. This project uses **Google Advanced Consent Mode v2** to stay legally compliant without losing the analytical signals needed for our AI models.
 
 ### What happens when a user clicks "Reject"?
-If a user refuses tracking, the system doesn't stop working; it just changes how it collects data:
-* **No Cookies:** It sends "cookieless pings" to Google Analytics. It records the action (like hesitating on a form) but removes all personal identifiers.
-* **Anonymous Data:** In our BigQuery database, the user's ID column is simply left blank (`NULL`).
+If a user refuses tracking, the system doesn't stop working; it fundamentally changes how it collects data:
+* **No Cookies or Storage:** It strictly avoids writing or reading *any* identifiers in cookies, Local Storage, or Session Storage.
+* **Cookieless Pings:** It sends anonymous pings to Google Analytics. It records the action (like hesitating on a form) but strips the payload of all personal identifiers.
+* **Anonymous Data:** In our BigQuery database, the user's ID column (`user_pseudo_id`) is strictly recorded as `NULL`.
 
-### How the AI Still Works (Session Tracking)
-Since we don't know *who* the user is, we focus on the *session* itself.
-* **Temporary IDs:** When the checkout page loads, the system creates a temporary, random Session ID.
-* **Isolated Data:** This ID connects the user's hesitation time and scroll depth for that single visit only. Once they close the tab, the ID is deleted forever.
-* **Training the Model:** Our AI and statistical models don't need personal data to learn. They only need to answer one question: *"In this isolated session, did 12 seconds of hesitation lead to an abandoned cart?"*
+### How the Analytics Pipeline Survives (Event-Level Inference)
+Since we cannot legally stitch a user's session together using local storage IDs after a rejection, the architecture relies on two compliant methods:
+1. **Event-Level Enrichment:** Instead of tracking variables across time, the frontend script holds behavioral metrics (scroll depth and hesitation time) in temporary execution memory. When the final user action occurs (e.g., a purchase or an abandonment), these metrics are appended directly to that single, final ping as `event_parameters`. 
+2. **Behavioral Modeling:** The system relies on Google Analytics 4's backend machine learning. It uses the behavioral patterns of consenting users to accurately model the friction points of unconsenting users, filling the analytical gaps without tracking individuals.
 
 ### The Engineering Trade-Off
-Here is how the user's choice impacts what the system can do:
+Here is how the user's choice impacts the data architecture:
 
-| User Choice | Privacy Compliance | Data Collected | System Capabilities |
+| User Choice | Privacy Compliance | BigQuery Data Structure | System Capabilities |
 | :--- | :--- | :--- | :--- |
-| **Accept** | Fully Compliant | Complete (User ID + Session ID) | AI Dashboard Insights **AND** Ad Retargeting. |
-| **Reject** | Strictly Compliant (No Cookies)| Anonymous (Session ID only) | AI Dashboard Insights **ONLY**. (Ads are disabled). |
+| **Accept** | Fully Compliant | Complete (User ID + Session Data) | AI Dashboard Insights **AND** Ad Retargeting. |
+| **Reject** | Strictly Compliant (No Storage) | Anonymous (Event-Level & Modeled Only) | AI Dashboard Insights **ONLY**. (Ads are completely disabled). |
   
 ```mermaid
 graph TD
