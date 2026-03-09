@@ -27,6 +27,29 @@ The expected outcome is a practical business solution:
 * **Statistical Proof:** A mathematical model that calculates exactly how much sales are lost due to user hesitation.
 * **System Design:** Documentation showing how to balance smart data predictions with a fast, delay-free website.
 * **Business Scorecard:** A visual dashboard that translates user behaviour into clear financial numbers, focusing on "Revenue at Risk" and "Saved Sales" rather than basic page views.
+
+## 6. Privacy and Consent (Consent Mode v2)
+
+Modern data projects must balance tracking user behavior with respecting privacy laws like GDPR. This project uses **Google Advanced Consent Mode v2** to stay legally compliant without losing the data needed for our AI models.
+
+### What happens when a user clicks "Reject"?
+If a user refuses tracking, the system doesn't stop working; it just changes how it collects data:
+* **No Cookies:** It sends "cookieless pings" to Google Analytics. It records the action (like hesitating on a form) but removes all personal identifiers.
+* **Anonymous Data:** In our BigQuery database, the user's ID column is simply left blank (`NULL`).
+
+### How the AI Still Works (Session Tracking)
+Since we don't know *who* the user is, we focus on the *session* itself.
+* **Temporary IDs:** When the checkout page loads, the system creates a temporary, random Session ID.
+* **Isolated Data:** This ID connects the user's hesitation time and scroll depth for that single visit only. Once they close the tab, the ID is deleted forever.
+* **Training the Model:** Our AI and statistical models don't need personal data to learn. They only need to answer one question: *"In this isolated session, did 12 seconds of hesitation lead to an abandoned cart?"*
+
+### The Engineering Trade-Off
+Here is how the user's choice impacts what the system can do:
+
+| User Choice | Privacy Compliance | Data Collected | System Capabilities |
+| :--- | :--- | :--- | :--- |
+| **Accept** | Fully Compliant | Complete (User ID + Session ID) | AI Dashboard Insights **AND** Ad Retargeting. |
+| **Reject** | Strictly Compliant (No Cookies)| Anonymous (Session ID only) | AI Dashboard Insights **ONLY**. (Ads are disabled). |
   
 ```mermaid
 graph TD
