@@ -22,6 +22,17 @@ The project relies on two behavioural theories and one practical system design r
 * **H1:** An increase in hesitation time at complex checkout fields leads to a measurable drop in completed sales.
 * **H2:** By preparing AI help messages in the background rather than generating them live, we can intervene during moments of frustration instantly, avoiding site delays that would otherwise ruin the shopping experience.
 
+## Dataset Overview (Data Dictionary)
+
+The dataset used in this Proof of Concept (PoC) is synthetically generated via a Python simulation. It is designed to mimic custom behavioral event tracking (e.g., via Google Tag Manager and GA4) that captures micro-interactions often missed by default configurations. The dataset consists of 538 user sessions.
+
+| Column Name | Data Type | Description |
+| :--- | :--- | :--- |
+| `session_id` | String | A unique alphanumeric identifier for each user session. |
+| `hesitation_seconds` | Numeric (Float) | The exact time in seconds a user spent idle or hesitating before clicking the final call-to-action (e.g., "Confirm Purchase") button. |
+| `scroll_depth_percent` | Numeric (Integer) | The maximum scroll depth reached by the user on the product or checkout page, ranging from 0% to 100%. |
+| `is_buyer` | Binary (Integer) | **Target Variable:** Indicates the final conversion outcome. `1` represents a completed purchase, while `0` represents cart abandonment. |
+
 ## 5. Expected Results and Deliverables
 The expected outcome is a practical business solution:
 * **Statistical Proof:** A mathematical model that calculates exactly how much sales are lost due to user hesitation.
