@@ -11,7 +11,7 @@ Built a generalized linear model (`glm`) to evaluate the impact of independent b
 friction_model <- glm(is_buyer ~ hesitation_seconds + scroll_depth_percent, 
                       family = "binomial", 
                       data = friction_data)
-
+```
 ### 3.3 Key Findings
 The calculations revealed two main conclusions:
 * **Impact of Hesitation:** The numbers clearly proved that spending more seconds hesitating in front of the payment button reduces the chance of completing the transaction.
