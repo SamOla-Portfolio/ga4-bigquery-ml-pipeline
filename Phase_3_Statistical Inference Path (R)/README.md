@@ -17,10 +17,9 @@ The calculations revealed two main conclusions:
 * **Impact of Hesitation:** The numbers clearly proved that spending more seconds hesitating in front of the payment button reduces the chance of completing the transaction.
 * **Impact of Scrolling:** We noticed a very clear split in visitor behavior. People who scrolled deeply down the page completed the purchase, while those who barely scrolled abandoned the cart.
 
-3.4 Statistical Data Visualization (DataViz)
+### 3.4 Statistical Data Visualization (DataViz)
 To visually communicate the mathematical mechanics to non-technical stakeholders, a Logistic Probability Curve (Sigmoid) was plotted using ggplot2.
 
-[Insert your English plot image here]
 
 Visual Insight: The plot clearly illustrates the "Complete Separation" phenomenon. The sharp S-curve demonstrates how scroll depth acts as a perfect predictor in this dataset, while the expanded confidence band visually represents the algorithm's standard error calculation behavior under these deterministic conditions.
 
