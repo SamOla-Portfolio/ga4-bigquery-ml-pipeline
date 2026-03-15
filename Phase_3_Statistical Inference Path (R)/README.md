@@ -23,6 +23,12 @@ To visually communicate the mathematical mechanics to non-technical stakeholders
 
 Visual Insight: The plot clearly illustrates the "Complete Separation" phenomenon. The sharp S-curve demonstrates how scroll depth acts as a perfect predictor in this dataset, while the expanded confidence band visually represents the algorithm's standard error calculation behavior under these deterministic conditions.
 
+### 3.5 Project Limitations and Real-World Considerations
+Since this is a Proof of Concept (PoC) using simulated data, there are a few practical limitations to keep in mind:
+
+* **The "Too Perfect" Data:** Because our synthetic data created a strict rule (e.g., everyone who scrolled deep enough made a purchase), standard statistical tests struggle to process it. The model's math is designed for real-world uncertainty, not absolute certainty.
+* **Missing Context:** We only measured hesitation and scroll depth. In a live business environment, we would need to feed the model with other factors that affect buying decisions, such as device type (mobile vs. desktop), traffic source, and time of day.
+* **Unrealistic Outliers:** Some simulated sessions included unnaturally long hesitation times (representing a user who might have left the tab open and walked away). Before deploying this system in a real company, strict data cleaning rules must be applied to filter out these extreme cases so they do not confuse the predictions.
 
 
 
