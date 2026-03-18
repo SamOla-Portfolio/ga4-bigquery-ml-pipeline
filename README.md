@@ -70,9 +70,10 @@ Here is how the user's choice impacts the data architecture:
 | :--- | :--- | :--- | :--- |
 | **Accept** | Fully Compliant | Complete (User ID + Session Data) | AI Dashboard Insights **AND** Ad Retargeting. |
 | **Reject** | Strictly Compliant (No Storage) | Anonymous (Event-Level & Modeled Only) | AI Dashboard Insights **ONLY**. (Ads are completely disabled). |
-  
+  <img width="666" height="831" alt="diagram" src="https://github.com/user-attachments/assets/a9076e3e-41c7-44b4-95c2-279930acbd9b" />
+
 ```mermaid
-graph TD
+graph LR
     %% Phase 1
     subgraph P1 [1. Behavioral Ingestion]
         A[User Interaction] -->|GTM / Consent v2| B(Google Tag Manager)
@@ -82,31 +83,30 @@ graph TD
     %% Phase 2
     subgraph P2 [2. Data & Simulation]
         C -->|Daily Batch| D[(BigQuery Warehouse)]
-        E[Python Synthetic Data] -->|500 sessions PoC| D
+        E[Synthetic Data] -->|500 sessions PoC| D
         D -->|SQL Flattening| F{Analyzable Data}
     end
 
     %% Phase 3 & 4
-    subgraph P3_4 [3 & 4. Analytics & AI Storytelling]
+    subgraph P3_4 [3 & 4. Predictive Analytics & AI Insights]
         F --> G[R Studio: Logistic Regression]
         F --> H[BigQuery ML: Risk Models]
         
         G -->|Coefficient Data| I(Combined Feed)
         H -->|Abandonment Probability| I
         
-        I -->|System Prompt| J{{GenAI / Gemini LLM}}
+        I -->|System Prompt| J{{GenAI Python Script}}
     end
 
     %% Phase 5
-    subgraph P5 [5. BI & Data Storytelling]
-        J -->|Automated Narrative| K[AI Executive Summary]
-        F -->|Quant Metrics| L[KPI Dashboards]
-        
-        K & L --> M[Looker Studio: AI-Enhanced UI]
+    subgraph P5 [5. Business Intelligence & Reporting]
+        F -->|Quant Metrics & Predictions| L[KPI Data Structuring]
+        L --> M[Looker Dashboard]
     end
 
     %% Final Output
-    M --> N[GitHub: Business Case Study]
+    J -->|Qualitative Narrative| N[GitHub: Business Case Study]
+    M -->|Interactive Visuals| N
 
     %% Styles for readability
     style J fill:#f96,stroke:#333,stroke-width:2px,color:#000
