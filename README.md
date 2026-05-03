@@ -1,5 +1,70 @@
+# Datapipeline för prediktiv analys av användarbeteende
+**En komplett datapipeline för att analysera användartvekan och köpsannolikhet med hjälp av GA4, BigQuery och R.**
+
+### **Projektstatus: Konceptbevis (Proof of Concept)**
+Detta projekt är utvecklat som ett **Konceptbevis (PoC)** för att demonstrera en modern och skalbar **Dataarkitektur**. Syftet är att visa hur man praktiskt kan integrera avancerad statistik och **Artificiell intelligens** för att lösa affärskritiska utmaningar, såsom digital användarfriktion.
+
+Genom att använda en kombination av **BigQuery**, **SQL**, **R** och **Python**, illustrerar projektet hela kedjan från datainsamling till prediktiva insikter. Även om data som används är syntetiska, är den tekniska infrastrukturen designad för att kunna implementeras direkt i en verklig produktionsmiljö för att skapa mätbar **Kundnytta** och optimera affärsresultat.
+---
+
+# Fallstudie: Psykologisk friktionspoäng inom e-handel
+## 1. Projektets syfte
+Traditionell webbanalys fokuserar vanligtvis på om en användare genomförde ett köp eller lämnade sidan. Detta projekt undersöker istället den ”gråzon” som finns däremellan genom att mäta tyst användartvekan (psykologisk friktion) under utcheckningsprocessen. 
+
+Målet är att bygga ett pålitligt system som identifierar var användare stöter på problem och omedelbart visar hjälpsamma meddelanden för att rädda försäljningen innan de lämnar sin varukorg. Detta är ett testprojekt som använder 500 simulerade besök för att demonstrera ett praktiskt och affärsfokuserat tillvägagångssätt.
+
+## 2. Forskningsfrågor
+Projektet syftar till att besvara följande kärnfråga:
+* ”Hur kan vi mäta osynliga användarbeteenden (som tvekan) på ett pricksäkert sätt för att förutse övergivna varukorgar, och omedelbart ingripa med förgenererad AI-hjälp utan att kompromissa med webbplatsens prestanda?”
+
+## 3. Underliggande teorier och principer
+Projektet vilar på två beteendeteorier och en praktisk regel för systemdesign:
+
+* **Teorin om kognitiv belastning (Cognitive Load Theory):** Det mänskliga arbetsminnet har en begränsad kapacitet. Komplexa gränssnitt eller stressiga ekonomiska beslut ökar den mentala ansträngningen. Eftersom vi inte kan mäta tankar direkt, använder vi **tvekan (i sekunder)** som ett mätbart substitut. Mer tvekan tyder på högre mental ansträngning och förvirring.
+* **Foggs beteendemodell (Fogg Behavior Model):** Ett beteende uppstår endast när motivation, förmåga och en trigger (prompt) sammanfaller. När en användare når betalknappen finns triggern tydligt där. Om de tvekar antar vi att det finns problem med antingen deras förmåga (formuläret är förvirrande) eller deras motivation (brist på förtroende).
+* **Praktiskt systemdesign:** Verktyg för djupgående dataanalys är ofta för långsamma för att köras i realtid medan en användare väntar på en webbsida. För att hålla webbplatsen snabb beräknar systemet risknivåer i förväg och genererar hjälpinformation i bakgrunden. Detta gör att webbplatsen kan visa rätt meddelande direkt när en användare fastnar.
+
+## 4. Hypoteser
+* **H1:** Användare som uppvisar hög tvekan (t.ex. >15 sekunder) under utcheckningen har en statistiskt signifikant högre sannolikhet för övergiven varukorg jämfört med baslinjen.
+* **H2:** Genom att generera AI-hjälpmeddelanden i bakgrunden möjliggörs omedelbara ingripanden när en användare tvekar, vilket minskar antalet övergivna varukorgar utan att sänka webbplatsens hastighet.
+
+## 5. Dataset-översikt (Data Dictionary)
+Datasetet som används i detta konceptbevis (PoC) är syntetiskt genererat via en Python-simulering. Det är utformat för att efterlikna anpassad beteendespårning (t.ex. via Google Tag Manager och GA4) som fångar mikrointeraktioner som ofta missas i standardkonfigurationer. Datasetet består av 538 användarsessioner.
+
+## 6. Förväntade resultat och leveranser
+Detta projekt levererar en komplett, heltäckande analytisk lösning:
+* **Prediktiv ML-modell:** En logistisk regressionsmodell (byggd via BigQuery ML) som kvantifierar det exakta sambandet mellan användarens tvekan och sannolikheten för övergiven varukorg.
+* **Automatiserad dataarkitektur:** En robust SQL-pipeline som omvandlar komplex, kapslad GA4-data till strukturerade, analysfärdiga tabeller utan dataförlust.
+* **Interaktiv BI-dashboard:** En Looker Studio-dashboard som kartlägger en "beteendebaserad friktionstratt" och översätter abstrakta användarinteraktioner till konkreta ekonomiska mätetal (t.ex. intäkter i riskzonen och förväntad avhoppsfrekvens).
+* **Kvalitativa GenAI-insikter:** Ett Python-baserat automatiseringsskript som bearbetar statistiska avvikelser och genererar läsbara, kvalitativa förklaringar till varför användare lämnar sidan.
+
+## 7. Integritet och samtycke (Consent Mode v2)
+Moderna dataprojekt måste balansera analys av användarbeteende med respekt för integritetslagar som GDPR och ePrivacy-direktivet. Detta projekt använder **Google Advanced Consent Mode v2** för att vara juridiskt efterlevande utan att förlora de analytiska signaler som krävs för våra AI-modeller.
+
+## 8. Föreslagen testmetodik (A/B-testning)
+Eftersom detta är ett simulerat portföljprojekt utvärderades systemet offline (modellens noggrannhet, precision och recall). I en verklig produktionsmiljö skulle hypotes 2 (H2) valideras genom ett strikt A/B-test:
+
+* **Kontrollgrupp (A):** Användare går igenom den vanliga utcheckningsprocessen utan någon AI-intervention.
+* **Variantgrupp (B):** Högriskanvändare (tvekan > 15 sek) får omedelbart ett förgenererat AI-hjälpmeddelande.
+* **Viktiga mätetal att följa:**
+  1. **Huvudmätetal:** Konverteringsgrad för utcheckning (förväntas öka i grupp B).
+  2. **Skyddsmätetal 1 (Guardrail):** Genomsnittlig laddningstid för sidan (måste förbli lika mellan A och B för att bevisa att bakgrundsbearbetningen fungerar).
+  3. **Skyddsmätetal 2 (Guardrail):** Avvisningsfrekvens för hjälpmeddelandet (för att mäta om AI-meddelandet upplevdes som störande).
+ 
+### Vad händer när en användare klickar på "Neka"?
+Om en användare nekar spårning slutar systemet inte att fungera; det ändrar istället i grunden hur det samlar in data för att skydda integriteten:
+* **Inga kakor eller lagring:** Systemet undviker strikt att skriva eller läsa identifierare i kakor (cookies), Local Storage eller Session Storage.
+* **Cookieless pings:** Anonyma anrop ("pings") skickas till Google Analytics. Systemet registrerar händelsen (som att tveka vid ett formulär) men rensar all data från personliga identifierare.
+* **Anonym data:** I vår BigQuery-databas registreras användarens ID-kolumn (`user_pseudo_id`) strikt som `NULL`.
+
+### Hur datapipelinen fungerar vid nekat samtycke (Event-Level Inference)
+Eftersom vi enligt lag inte kan koppla ihop en användarsession med hjälp av lokala ID:n efter ett nej, förlitar sig arkitekturen på två metoder som följer gällande regler:
+1. **Berikning på händelsenivå (Event-Level Enrichment):** Istället för att spåra variabler över tid, sparar frontend-skriptet beteendemått (skrolldjup och tvekan) i ett tillfälligt minne under körningen. När den sista användaråtgärden sker (t.ex. ett köp eller ett avbrott), bifogas dessa mått direkt till det specifika anropet som `event_parameters`.
+2. **Beteendemodellering:** Systemet förlitar sig på Google Analytics 4:s inbyggda maskininlärning. Den använder beteendemönster från användare som gett samtycke för att modellera friktionspunkter för användare som inte gett samtycke. På så sätt fylls analysluckorna utan att spåra enskilda individer.
+------------------------------------------------------------------------------------------------------
+
 # ga4-bigquery-ml-pipeline
-End-to-end data pipeline analyzing user hesitation and purchase probability using GA4, BigQuery, and R.
+End-to-end data pipeline analysing user hesitation and purchase probability using GA4, BigQuery, and R.
 
 # Case Study: The Psychological Friction Score in E-commerce
 
